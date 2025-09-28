@@ -84,19 +84,19 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             if (data.success) {
-                generationMessage.textContent = data.message;
+                // Generation completed successfully!
+                generationAlert.className = 'alert alert-success';
+                generationMessage.innerHTML = `
+                    <i class="fas fa-check-circle me-2"></i>
+                    Newsletter generated successfully! 
+                    ${data.generation_time ? `Generation time: ${data.generation_time.toFixed(2)}s` : ''}
+                    ${data.total_time ? `Total time: ${data.total_time.toFixed(2)}s` : ''}
+                `;
                 
-                // Start checking for completion
-                checkInterval = setInterval(checkGenerationStatus, 3000); // Check every 3 seconds
-                
-                // Also check immediately after 2 seconds
-                setTimeout(checkGenerationStatus, 2000);
-                
-                // Show logs button and auto-open logs modal
-                showLogsButton();
+                // Reload the page to show the new newsletter
                 setTimeout(() => {
-                    viewLogs(); // Auto-open logs modal after 3 seconds
-                }, 3000);
+                    window.location.reload();
+                }, 2000);
             } else {
                 throw new Error(data.error || 'Generation failed');
             }

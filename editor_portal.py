@@ -362,10 +362,20 @@ def generate_newsletter():
                     
                     print(f"[DEBUG] Newsletter saved to: {newsletter_path}")
                     
+                    # Also save to database for tracking
+                    try:
+                        init_database()
+                        save_newsletter_to_db(newsletter_id, html_content)
+                        print(f"[DEBUG] Newsletter saved to database: {newsletter_id}")
+                    except Exception as db_error:
+                        print(f"[DEBUG] Database save failed (non-critical): {db_error}")
+                    
                     return jsonify({
                         "success": True,
                         "message": f"Newsletter generated successfully! Saved as {newsletter_id}",
-                        "newsletter_id": newsletter_id
+                        "newsletter_id": newsletter_id,
+                        "generation_time": data.get('generation_time_seconds', 0),
+                        "total_time": data.get('total_time_seconds', 0)
                     })
                 else:
                     return jsonify({
