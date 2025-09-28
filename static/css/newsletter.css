@@ -1,0 +1,538 @@
+/* Newsletter CSS - Mobile First Responsive Design */
+
+/* Base styles - Mobile first */
+* {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 10px;
+}
+
+.container {
+    max-width: 100%;
+    margin: auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Typography - Mobile optimized */
+h1 {
+    font-size: 2em;
+    text-align: center;
+    color: #1a1a1a;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    word-wrap: break-word;
+}
+
+h2 {
+    font-size: 1.3em;
+    margin-top: 25px;
+    color: #1a1a1a;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+}
+
+h3 {
+    font-size: 1.1em;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    color: #495057;
+    font-weight: 600;
+}
+
+p {
+    margin: 0 0 15px 0;
+    color: #555;
+    font-size: 15px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Date styling */
+.date {
+    text-align: center;
+    font-size: 0.85em;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+/* Market Grid - Mobile first (single column) */
+.market-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.market-item {
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    font-size: 14px;
+}
+
+.market-item .label {
+    font-size: 12px;
+    font-weight: bold;
+    color: #6c757d;
+    margin-bottom: 4px;
+}
+
+.market-item .value {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin: 4px 0;
+}
+
+.market-item .change {
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+.market-item .change.positive {
+    color: #28a745;
+}
+
+.market-item .change.negative {
+    color: #dc3545;
+}
+
+/* Story sections */
+.story {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.story:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Game section - Mobile optimized */
+.game-container {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.game-question {
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.game-item {
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #fff;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.game-options {
+    margin: 15px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.game-options button {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 2px solid #007bff;
+    background-color: #fff;
+    color: #007bff;
+    transition: all 0.2s;
+}
+
+.game-options span {
+    margin: 5px 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.game-options button:hover:not(:disabled) {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.game-options button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border-color: #dee2e6;
+}
+
+#game-feedback, #game-feedback_mcap {
+    margin-top: 15px;
+    font-weight: bold;
+    min-height: 24px;
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.game-scores {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Disclaimer */
+.disclaimer {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 20px;
+    border-top: 1px solid #e9ecef;
+    padding-top: 15px;
+    line-height: 1.4;
+}
+
+/* Text formatting */
+em {
+    color: #6c757d;
+}
+
+strong {
+    color: #000;
+}
+
+u {
+    text-decoration: underline;
+    text-decoration-color: #555;
+}
+
+ul {
+    list-style-type: square;
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+/* Utility classes */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.mb-20 { margin-bottom: 20px; }
+
+/* Tablet styles (minimum width 500px) */
+@media (min-width: 500px) {
+    body {
+        padding: 15px;
+    }
+    
+    .container {
+        padding: 25px;
+    }
+    
+    .market-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .market-item {
+        padding: 14px;
+        font-size: 15px;
+    }
+    
+    .market-item .value {
+        font-size: 18px;
+    }
+    
+    .game-options {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .game-options button {
+        width: auto;
+        min-width: 120px;
+        padding: 12px 20px;
+    }
+    
+    .game-options span {
+        margin: 0;
+    }
+    
+    h1 {
+        font-size: 2.5em;
+    }
+    
+    h2 {
+        font-size: 1.4em;
+    }
+}
+
+/* Desktop styles (minimum width 768px) */
+@media (min-width: 768px) {
+    body {
+        padding: 20px;
+    }
+    
+    .container {
+        max-width: 600px;
+        padding: 30px;
+    }
+    
+    h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+    }
+    
+    h2 {
+        font-size: 1.5em;
+        margin-top: 35px;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+    }
+    
+    h3 {
+        font-size: 1.2em;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+    
+    p {
+        font-size: 16px;
+    }
+    
+    .date {
+        font-size: 0.9em;
+        margin-bottom: 20px;
+    }
+    
+    .market-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+    
+    .market-item {
+        padding: 15px;
+        font-size: 16px;
+    }
+    
+    .market-item .label {
+        font-size: 13px;
+    }
+    
+    .market-item .value {
+        font-size: 20px;
+    }
+    
+    .market-item .change {
+        font-size: 14px;
+    }
+    
+    .story {
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+    }
+    
+    .game-container {
+        padding: 20px;
+        margin-top: 20px;
+    }
+    
+    .game-question {
+        font-size: 18px;
+    }
+    
+    .game-item {
+        font-size: 16px;
+    }
+    
+    .game-options button {
+        font-size: 16px;
+        padding: 10px 18px;
+    }
+    
+    #game-feedback, #game-feedback_mcap {
+        font-size: 16px;
+    }
+    
+    .game-scores {
+        font-size: 15px;
+    }
+    
+    .disclaimer {
+        font-size: 13px;
+        padding-top: 20px;
+    }
+}
+
+/* Large desktop (minimum width 1024px) */
+@media (min-width: 1024px) {
+    .container {
+        max-width: 650px;
+    }
+    
+    h1 {
+        font-size: 3.4em;
+    }
+    
+    h2 {
+        margin-top: 40px;
+    }
+    
+    h3 {
+        margin-top: 35px;
+    }
+    
+    .disclaimer {
+        font-size: 14px;
+    }
+}
+
+/* Email client compatibility */
+@media only screen and (max-device-width: 480px) {
+    .container {
+        width: 100% !important;
+        max-width: none !important;
+        padding: 15px !important;
+    }
+    
+    .market-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    h1 {
+        font-size: 28px !important;
+    }
+    
+    h2 {
+        font-size: 22px !important;
+    }
+    
+    p {
+        font-size: 15px !important;
+    }
+    
+    .game-options {
+        flex-direction: column !important;
+    }
+    
+    .game-options button {
+        width: 100% !important;
+        margin: 5px 0 !important;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1a1a1a;
+        color: #e4e4e4;
+    }
+    
+    .container {
+        background: #2d2d2d;
+        color: #e4e4e4;
+    }
+    
+    h1, h2, h3 {
+        color: #f8f9fa;
+        border-bottom-color: #495057;
+    }
+    
+    .market-item {
+        background-color: #343a40;
+        border-color: #495057;
+    }
+    
+    .story {
+        border-bottom-color: #495057;
+    }
+    
+    .game-container {
+        background-color: #343a40;
+    }
+    
+    .game-item {
+        background-color: #495057;
+        border-color: #6c757d;
+    }
+    
+    .disclaimer {
+        border-top-color: #495057;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        background: white;
+        color: black;
+        font-size: 12pt;
+    }
+    
+    .container {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+    
+    .game-container {
+        display: none;
+    }
+    
+    a {
+        color: black;
+        text-decoration: underline;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .market-item {
+        border: 2px solid #000;
+    }
+    
+    .game-options button {
+        border: 2px solid #000;
+    }
+    
+    .game-options button:hover:not(:disabled) {
+        background-color: #000;
+        color: #fff;
+    }
+} 
