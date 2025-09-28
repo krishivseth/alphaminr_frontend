@@ -26,7 +26,7 @@ venv/
 env/
 ENV/
 
-# Environment Variables
+# Environment Variables (keep .env.example but ignore actual .env)
 .env
 .env.local
 .env.development.local
@@ -51,14 +51,8 @@ logs/
 *.tmp
 *.temp
 
-# Newsletter files (generated)
-newsletters/
-*.html
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
 # Lock files
 generation.lock
+
+# Note: newsletters/ and newsletters.db are now included in the repository
+# Note: .env files are ignored for security - use environment variables in production

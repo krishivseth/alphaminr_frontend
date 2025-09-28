@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alphaminr</title>
+    <style>
+        
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 525px; /* 25% wider than 420px */
+            margin: auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        h1 {
+            font-size: 3.4em; /* 70% larger than 2em */
+            text-align: center;
+            color: #1a1a1a;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-top: 40px;
+            color: #1a1a1a;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .date {
+            text-align: center;
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .market-item {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+        .market-item .label {
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #6c757d;
+        }
+        .market-item .value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+        .story {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .story:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        p {
+            margin: 0 0 15px 0;
+            color: #555;
+        }
+        em {
+            color: #6c757d;
+        }
+        strong {
+            color: #000;
+        }
+        u {
+            text-decoration: underline;
+            text-decoration-color: #555;
+        }
+        ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .disclaimer {
+            font-size: 0.8em;
+            color: #6c757d;
+            margin-top: 20px;
+            border-top: 1px solid #e9ecef;
+            padding-top: 20px;
+        }
+        /* Game Styles */
+        .game-container {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .game-question {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        .game-item {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #fff;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .game-options button {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            transition: all 0.2s;
+        }
+        .game-options button:hover:not(:disabled) {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+        }
+        .game-options button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        #game-feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            height: 20px;
+        }
+        .game-scores {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .mceNonEditable {
+            position: relative;
+            border: 2px dashed #ccc;
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .mceNonEditable::before {
+            content: "🎮 Interactive Game Section (Non-Editable)";
+            position: absolute;
+            top: -12px;
+            left: 10px;
+            background-color: #f8f9fa;
+            padding: 0 8px;
+            font-size: 12px;
+            color: #666;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Alphaminr</h1>
+        <div class="date" id="current-date">June 27, 2025</div>
+        
+        <p>Global markets continue navigating heightened geopolitical tensions as multiple flashpoints demand investor attention. The ongoing Russia-Ukraine conflict has evolved into a broader concern affecting supply chains and commodity markets, while emerging tensions in the Middle East add another layer of complexity. Recent U.S. military strikes have escalated the Israel-Iran situation, forcing markets to price in elevated regional risks. The IMF has specifically highlighted how geopolitical fragmentation is emerging as a serious threat to financial stability, particularly through its impact on banking sector risk appetite and cross-border capital flows. Meanwhile, cyber warfare concerns are intensifying, with the Colonial Pipeline incident serving as a stark reminder of infrastructure vulnerabilities. BlackRock's latest geopolitical risk dashboard suggests these tensions are reshaping traditional investment landscapes in unprecedented ways.</p>
+        <br><br>
+        <em>This is what Alphaminr found beneath the noise.</em>
+        <br><br><br>
+
+        <h2>Market Snapshot</h2>
+        <div class="market-grid">
+            
+            <div class="market-item">
+                <div class="label">S&P 500</div>
+                <div class="value">5,346.53</div>
+            </div>
+            <div class="market-item">
+                <div class="label">NASDAQ</div>
+                <div class="value">N/A</div>
+            </div>
+            <div class="market-item">
+                <div class="label">Dow Jones</div>
+                <div class="value">N/A</div>
+            </div>
+            <div class="market-item">
+                <div class="label">10-Yr Treasury</div>
+                <div class="value">N/A</div>
+            </div>
+            <div class="market-item">
+                <div class="label">VIX</div>
+                <div class="value">N/A</div>
+            </div>
+            <div class="market-item">
+                <div class="label">WTI Crude</div>
+                <div class="value">$150.00</div>
+            </div>
+            <div class="market-item">
+                <div class="label">Gold</div>
+                <div class="value">$1,933.00</div>
+            </div>
+            <div class="market-item">
+                <div class="label">Bitcoin</div>
+                <div class="value">$107.4k</div>
+            </div>
+            <div class="market-item">
+                <div class="label">Fear & Greed</div>
+                <div class="value">N/A</div>
+            </div>
+        </div>
+
+        <h2>Economy</h2>
+        <p>The International Monetary Fund's latest analysis reveals a complex interplay between geopolitical tensions and financial markets, with particular emphasis on how these disruptions affect banking sector stability. The transmission mechanism operates through multiple channels, including direct impacts on supply chains and commodity markets, which subsequently influence domestic growth and inflation dynamics. This has begun to constrain banks' risk-taking capacity, potentially leading to a reduction in lending activity that could further weigh on economic growth.</p>
+        <p>The evolution of cross-border payment systems and FX reserves is undergoing significant transformation, driven by shifting geopolitical alignments. According to IMF research, emerging market economies are playing an increasingly crucial role as economic connectors, helping to mitigate some costs of global fragmentation. This structural shift is particularly evident in the changing patterns of trade and foreign direct investment, though comprehensive data on currency usage in international trade remains limited.</p>
+        <p>North American energy infrastructure is receiving renewed attention, with proposed natural gas pipeline projects in North Dakota highlighting the strategic importance of domestic energy security. This development comes as WTI crude maintains elevated levels at $150 per barrel, underscoring the critical relationship between energy infrastructure, national security, and economic stability. The high oil prices continue to influence inflation expectations and monetary policy considerations, particularly as the Federal Reserve navigates complex macroeconomic crosscurrents.</p>
+
+        <h2>Core Stories</h2>
+        \n        <div class="story">\n            <p><strong>N/A - Comprehensive quantitative analysis found no companies meeting strict criteria today (positive 3-month momentum, >20% YTD returns, technical strength, <25% from highs).</strong></p>\n        </div>
+
+        <h2>On The Horizon</h2>
+        <ul>
+            <li><strong>June 30, 2025:</strong> Federal Reserve Bank of New York releases manufacturing survey</li>
+            <li><strong>July 2, 2025:</strong> U.S. Factory Orders Report</li>
+            <li><strong>July 4, 2025:</strong> U.S. Markets Closed for Independence Day</li>
+            <li><strong>July 7, 2025:</strong> Eurozone Retail Sales Data</li>
+        </ul>
+        
+        <div class="mceNonEditable">
+        
+        <h2>Market Cap Showdown</h2>
+        <div class="game-container" id="game_mcap">
+            <div class="game-question">Which company has a higher market cap?</div>
+            <div id="game_item_1_mcap" class="game-item"></div>
+            <div class="game-options">
+                <button id="game_button_1_mcap"></button>
+                <span>or</span>
+                <button id="game_button_2_mcap"></button>
+            </div>
+            <div id="game_item_2_mcap" class="game-item"></div>
+            <div id="game_feedback_mcap"></div>
+            <div class="game-scores">
+                Score: <span id="game_score_mcap">0</span> | High Score: <span id="game_highscore_mcap">0</span>
+            </div>
+        </div>
+        </div>
+
+        <h2>Disclaimer</h2>
+        <p class="disclaimer">The content provided in this newsletter, "Alphaminr," is for informational and educational purposes only. It is not, and should not be construed as, financial, investment, legal, or tax advice. The information contained herein is based on sources believed to be reliable, but its accuracy and completeness cannot be guaranteed. Alphaminr, its authors, and its affiliates are not registered investment advisors and do not provide personalized investment advice. All investment strategies and investments involve risk of loss. Past performance is not indicative of future results. You should not act or refrain from acting on the basis of any content included in this newsletter without seeking financial or other professional advice. Any stock tickers or companies mentioned are for illustrative purposes only and do not constitute a recommendation to buy, sell, or hold any security. You are solely responsible for your own investment decisions.</p>
+    </div>
+
+<script>
+    // Set the current date
+    const dateElement = document.getElementById('current-date');
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    dateElement.textContent = new Date().toLocaleDateString('en-US', options);
+
+    
+    // --- Game Logic ---
+    const gameData_mcap = [
+        { name: 'Apple (AAPL)', value: 3000 },
+        { name: 'Microsoft (MSFT)', value: 2800 },
+        { name: 'NVIDIA (NVDA)', value: 1800 },
+        { name: 'Alphabet (GOOGL)', value: 1700 },
+        { name: 'Amazon (AMZN)', value: 1500 },
+        { name: 'Meta (META)', value: 800 },
+        { name: 'Tesla (TSLA)', value: 600 },
+        { name: 'Berkshire Hathaway (BRK.A)', value: 900 }
+    ];
+
+    const gameItem1_mcap = document.getElementById('game_item_1_mcap');
+    const gameItem2_mcap = document.getElementById('game_item_2_mcap');
+    const gameButton1_mcap = document.getElementById('game_button_1_mcap');
+    const gameButton2_mcap = document.getElementById('game_button_2_mcap');
+    const feedbackEl_mcap = document.getElementById('game_feedback_mcap');
+    const scoreEl_mcap = document.getElementById('game_score_mcap');
+    const highscoreEl_mcap = document.getElementById('game_highscore_mcap');
+
+    let score_mcap = 0;
+    let highscore_mcap = 0;
+    let currentItem1_mcap, currentItem2_mcap;
+
+    function loadHighscore_mcap() {
+        const savedHighscore = localStorage.getItem('gameHighscore_mcap');
+        highscore_mcap = parseInt(savedHighscore, 10) || 0;
+        highscoreEl_mcap.textContent = highscore_mcap;
+    }
+
+    function saveHighscore_mcap() {
+        localStorage.setItem('gameHighscore_mcap', highscore_mcap);
+    }
+
+    function setupRound_mcap() {
+        let items = [...gameData_mcap].sort(() => 0.5 - Math.random()).slice(0, 2);
+        currentItem1_mcap = items[0];
+        currentItem2_mcap = items[1];
+
+        gameItem1_mcap.textContent = currentItem1_mcap.name;
+        gameButton1_mcap.textContent = currentItem1_mcap.name;
+        gameItem2_mcap.textContent = currentItem2_mcap.name;
+        gameButton2_mcap.textContent = currentItem2_mcap.name;
+
+        feedbackEl_mcap.textContent = '';
+        feedbackEl_mcap.style.color = '';
+        gameButton1_mcap.disabled = false;
+        gameButton2_mcap.disabled = false;
+    }
+
+    function handleGuess_mcap(guessedItemName) {
+        const correctItem = currentItem1_mcap.value >= currentItem2_mcap.value ? currentItem1_mcap : currentItem2_mcap;
+        
+        gameButton1_mcap.disabled = true;
+        gameButton2_mcap.disabled = true;
+
+        if (guessedItemName === correctItem.name) {
+            feedbackEl_mcap.textContent = `Correct! ${currentItem1_mcap.name}: ${currentItem1_mcap.value}, ${currentItem2_mcap.name}: ${currentItem2_mcap.value}`;
+            feedbackEl_mcap.style.color = 'green';
+            score_mcap++;
+            if (score_mcap > highscore_mcap) {
+                highscore_mcap = score_mcap;
+                highscoreEl_mcap.textContent = highscore_mcap;
+                saveHighscore_mcap();
+            }
+        } else {
+            feedbackEl_mcap.textContent = `Incorrect. ${currentItem1_mcap.name}: ${currentItem1_mcap.value}, ${currentItem2_mcap.name}: ${currentItem2_mcap.value}`;
+            feedbackEl_mcap.style.color = 'red';
+            score_mcap = 0;
+        }
+        scoreEl_mcap.textContent = score_mcap;
+
+        setTimeout(setupRound_mcap, 2500);
+    }
+
+    gameButton1_mcap.addEventListener('click', () => handleGuess_mcap(currentItem1_mcap.name));
+    gameButton2_mcap.addEventListener('click', () => handleGuess_mcap(currentItem2_mcap.name));
+    
+    loadHighscore_mcap();
+    setupRound_mcap();
+</script>
+
+</body>
+</html>

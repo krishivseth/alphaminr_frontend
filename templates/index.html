@@ -1,0 +1,257 @@
+<!-- templates/index.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Newsletter Dashboard</h1>
+    <div>
+        <button id="generateBtn" class="btn btn-success me-2">
+            <i class="fas fa-plus-circle"></i> Generate New Newsletter
+        </button>
+        <a href="/logout" class="btn btn-secondary">Logout</a>
+    </div>
+</div>
+
+<!-- Generation status alert (hidden by default) -->
+<div id="generationAlert" class="alert alert-info d-none" role="alert">
+    <i class="fas fa-spinner fa-spin me-2"></i>
+    <span id="generationMessage">Starting newsletter generation...</span>
+</div>
+
+<div class="card">
+    <div class="card-header"><h5 class="mb-0">Recent Newsletters</h5></div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Newsletter File</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="newsletterList">
+                {% for newsletter in newsletters %}
+                <tr>
+                    <td><i class="fas fa-file-alt me-2"></i>{{ newsletter.id }}</td>
+                    <td class="text-end">
+                        <a href="/editor/{{ newsletter.id }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr id="noNewsletters">
+                    <td colspan="2" class="text-center py-4">
+                        No newsletters found in the `newsletters/` directory.
+                        <br>
+                        <small>Click "Generate New Newsletter" to create one.</small>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const generateBtn = document.getElementById('generateBtn');
+    const generationAlert = document.getElementById('generationAlert');
+    const generationMessage = document.getElementById('generationMessage');
+    const newsletterList = document.getElementById('newsletterList');
+    let checkInterval = null;
+    
+    generateBtn.addEventListener('click', function() {
+        // Disable button and show loading state
+        generateBtn.disabled = true;
+        generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+        generationAlert.classList.remove('d-none');
+        generationMessage.textContent = 'Starting newsletter generation...';
+        
+        // Make the API call to generate newsletter
+        fetch('/api/generate-newsletter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(data.error || `HTTP ${response.status}: ${response.statusText}`);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                generationMessage.textContent = data.message;
+                
+                // Start checking for completion
+                checkInterval = setInterval(checkGenerationStatus, 3000); // Check every 3 seconds
+                
+                // Also check immediately after 2 seconds
+                setTimeout(checkGenerationStatus, 2000);
+                
+                // Show logs button and auto-open logs modal
+                showLogsButton();
+                setTimeout(() => {
+                    viewLogs(); // Auto-open logs modal after 3 seconds
+                }, 3000);
+            } else {
+                throw new Error(data.error || 'Generation failed');
+            }
+        })
+        .catch(error => {
+            // Check if it's a 409 Conflict (generation already in progress)
+            if (error.message && error.message.includes('already in progress')) {
+                generationAlert.className = 'alert alert-warning';
+                generationMessage.innerHTML = `<i class="fas fa-exclamation-triangle me-2"></i>${error.message}`;
+                
+                // Start checking for completion anyway
+                checkInterval = setInterval(checkGenerationStatus, 5000);
+                setTimeout(checkGenerationStatus, 2000);
+            } else {
+                generationAlert.className = 'alert alert-danger';
+                generationMessage.innerHTML = `<i class="fas fa-exclamation-circle me-2"></i>Error: ${error.message}`;
+            }
+            resetGenerateButton();
+        });
+    });
+    
+    function checkGenerationStatus() {
+        fetch('/api/generation-status')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'completed') {
+                    // Generation complete!
+                    clearInterval(checkInterval);
+                    generationAlert.className = 'alert alert-success';
+                    generationMessage.innerHTML = `<i class="fas fa-check-circle me-2"></i>Newsletter generated successfully!`;
+                    
+                    // Reload the page to show the new newsletter
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else if (data.status === 'in_progress') {
+                    // Update message to show it's still running
+                    generationMessage.textContent = data.message;
+                    
+                    // Auto-refresh logs if modal is open
+                    const logsModal = document.getElementById('logsModal');
+                    if (logsModal && logsModal.classList.contains('show')) {
+                        setTimeout(refreshLogs, 2000); // Refresh logs every 2 seconds
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error checking status:', error);
+            });
+    }
+    
+    function showLogsButton() {
+        // Add a button to view logs
+        const logsBtn = document.createElement('button');
+        logsBtn.className = 'btn btn-outline-info btn-sm mt-2';
+        logsBtn.innerHTML = '<i class="fas fa-file-alt"></i> View Logs';
+        logsBtn.onclick = viewLogs;
+        
+        const existingLogsBtn = document.querySelector('.logs-btn');
+        if (existingLogsBtn) {
+            existingLogsBtn.remove();
+        }
+        
+        logsBtn.classList.add('logs-btn');
+        generationAlert.appendChild(logsBtn);
+        
+        // Add debug button
+        const debugBtn = document.createElement('button');
+        debugBtn.className = 'btn btn-outline-warning btn-sm mt-2 ms-2';
+        debugBtn.innerHTML = '<i class="fas fa-bug"></i> Debug Files';
+        debugBtn.onclick = debugFiles;
+        debugBtn.classList.add('debug-btn');
+        generationAlert.appendChild(debugBtn);
+    }
+    
+    function viewLogs() {
+        fetch('/api/generation-logs')
+            .then(response => response.json())
+            .then(data => {
+                if (data.logs) {
+                    showLogsModal(data.logs, data.source);
+                } else {
+                    showLogsModal('No logs available yet', 'none');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching logs:', error);
+                showLogsModal('Error fetching logs: ' + error.message, 'error');
+            });
+    }
+    
+    function showLogsModal(logs, source) {
+        // Create modal HTML
+        const modalHtml = `
+            <div class="modal fade" id="logsModal" tabindex="-1" aria-labelledby="logsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="logsModalLabel">
+                                <i class="fas fa-file-alt"></i> Generation Logs 
+                                <small class="text-muted">(${source})</small>
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <pre style="background: #f8f9fa; padding: 15px; border-radius: 5px; max-height: 400px; overflow-y: auto; font-size: 12px; white-space: pre-wrap;">${logs}</pre>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="refreshLogs()">Refresh</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Remove existing modal if any
+        const existingModal = document.getElementById('logsModal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+        
+        // Add modal to page
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('logsModal'));
+        modal.show();
+    }
+    
+    function refreshLogs() {
+        viewLogs();
+    }
+    
+    function debugFiles() {
+        fetch('/api/debug-files')
+            .then(response => response.json())
+            .then(data => {
+                showLogsModal(JSON.stringify(data, null, 2), 'debug');
+            })
+            .catch(error => {
+                console.error('Error fetching debug info:', error);
+                showLogsModal('Error fetching debug info: ' + error.message, 'error');
+            });
+    }
+    
+    function resetGenerateButton() {
+        generateBtn.disabled = false;
+        generateBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Generate New Newsletter';
+        
+        // Hide alert after 5 seconds
+        setTimeout(() => {
+            generationAlert.classList.add('d-none');
+        }, 5000);
+    }
+});
+</script>
+{% endblock %}

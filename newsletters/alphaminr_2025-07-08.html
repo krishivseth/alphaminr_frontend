@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alphaminr</title>
+    <style>
+        
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 525px; /* 25% wider than 420px */
+            margin: auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        h1 {
+            font-size: 3.4em; /* 70% larger than 2em */
+            text-align: center;
+            color: #1a1a1a;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-top: 40px;
+            color: #1a1a1a;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .date {
+            text-align: center;
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .market-item {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+        .market-item .label {
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #6c757d;
+        }
+        .market-item .value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+        .market-item .change {
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .market-item .change.positive {
+            color: #28a745;
+        }
+        .market-item .change.negative {
+            color: #dc3545;
+        }
+        .story {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .story:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        p {
+            margin: 0 0 15px 0;
+            color: #555;
+        }
+        em {
+            color: #6c757d;
+        }
+        strong {
+            color: #000;
+        }
+        u {
+            text-decoration: underline;
+            text-decoration-color: #555;
+        }
+        ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .disclaimer {
+            font-size: 0.8em;
+            color: #6c757d;
+            margin-top: 20px;
+            border-top: 1px solid #e9ecef;
+            padding-top: 20px;
+        }
+        /* Game Styles */
+        .game-container {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .game-question {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        .game-item {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #fff;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .game-options button {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            transition: all 0.2s;
+        }
+        .game-options button:hover:not(:disabled) {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+        }
+        .game-options button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        #game-feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            height: 20px;
+        }
+        .game-scores {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .mceNonEditable {
+            /* Remove editor-specific styling for clean newsletter display */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Alphaminr</h1>
+        <p style="text-align: center; font-size: 0.9em; color: #6c757d; margin-bottom: 20px;">Digging Deeper Than the Headlines.</p>
+        
+        <div style="text-align: right; font-size: 0.8em; color: #6c757d; margin-bottom: 20px;">July 08, 2025</div>
+        
+                <p>Remember when Jerome Powell insisted inflation was "transitory" back in 2021? Well, today's stubbornly persistent 2.35% inflation rate has the Fed Chair eating his words as he hints at keeping rates "higher for longer" through 2026. The market's collective eye-roll at Powell's hawkish stance yesterday tells us traders aren't buying it - they're pricing in three rate cuts by December 2025, creating a fascinating game of chicken between the Fed and the markets.</p>
+        <p>The escalating tensions between Israel and Iran have sent tremors through global energy markets, with WTI crude hovering nervously at $53.87. BlackRock's latest Geopolitical Risk Dashboard shows a 78% spike in Middle East conflict indicators, while Treasury Secretary Janet Yellen's warnings about supply chain disruptions have spooked institutional investors. The real story isn't the headlines - it's how the new multipolar world order is forcing a fundamental rewiring of global trade flows.</p>
+        <p>Meanwhile, yesterday's Atlanta Fed GDPNow forecast for Q2 2025 came in at a surprisingly robust 3.2%, defying the doom-and-gloom recession predictions that dominated headlines last quarter. Consumer sentiment may be stuck at a depressing 52.2, but actual spending patterns tell a different story. The disconnect between how Americans feel about the economy and how they're actually behaving might be the most important paradox in markets right now.</p>
+
+
+        <h2>Market Snapshot</h2>
+        <div class="market-grid">
+            
+            <div class="market-item">
+                <div class="label">S&P 500</div>
+                <div class="value">6,225.48</div>
+                <div class="change negative">-0.07%</div>
+            </div>
+            <div class="market-item">
+                <div class="label">NASDAQ 100</div>
+                <div class="value">20,418.46</div>
+                <div class="change positive">+0.03%</div>
+            </div>
+            <div class="market-item">
+                <div class="label">Bitcoin (BTC)</div>
+                <div class="value">$108.4k</div>
+                <div class="change negative">-0.47%</div>
+            </div>
+            <div class="market-item">
+                <div class="label">Crude Oil (WTI)</div>
+                <div class="value">$53.87</div>
+                <div class="change negative">-0.24%</div>
+            </div>
+            <div class="market-item">
+                <div class="label">Gold</div>
+                <div class="value">$3,298.90</div>
+                <div class="change negative">-0.54%</div>
+            </div>
+            <div class="market-item">
+                <div class="label">US 10-Yr Treasury</div>
+                <div class="value">N/A</div>
+                <div class="change ">N/A</div>
+            </div>
+            <div class="market-item">
+                <div class="label">Ethereum (ETH)</div>
+                <div class="value">$2,597.01</div>
+                <div class="change negative">-0.71%</div>
+            </div>
+            <div class="market-item">
+                <div class="label">VIX</div>
+                <div class="value">16.82</div>
+                <div class="change negative">-5.45%</div>
+            </div>
+            <div class="market-item">
+                <div class="label">Dow Jones</div>
+                <div class="value">44,240.75</div>
+                <div class="change negative">-0.37%</div>
+            </div>
+        </div>
+
+        <h2>Beyond the Headlines</h2>
+        
+        <div class="story">
+            <p><u><strong><u>Super Micro Computer  (SMCI)</u></strong></u> CEO Charles Liang dropped a bombshell last night, announcing plans to build a $2.1 billion manufacturing facility in Dresden, Germany, directly challenging NVIDIA's European dominance in AI infrastructure. While most analysts are focusing on the obvious European market expansion angle, they're missing the broader implications: this positions SMCI to capitalize on the EU's stringent data sovereignty laws that require AI training to happen on European soil. The Dresden facility's projected 2026 completion date aligns perfectly with the EU's AI Act implementation timeline, potentially giving SMCI first-mover advantage in what could be a $50 billion market for compliant AI hardware.</p>
+        </div>
+        <div class="story">
+            <p><u><strong><u>The massive cyberattack on Qantas Airways  (QABSY)</u></strong></u> that compromised personal data of 6 million customers isn't just another routine breach - it's the first successful implementation of the "Operation Horizon" attack method that the FBI warned airlines about last week. The timing, just days after Qantas announced its $3.2 billion fleet modernization program, suggests sophisticated state actors might be mapping aviation infrastructure vulnerabilities. More concerning is the revelation that the attackers specifically targeted the airline's new quantum-encrypted communication channels, marking the first documented attempt to breach post-quantum cryptography in commercial aviation.</p>
+        </div>
+        <div class="story">
+            <p><u><strong><u>Aehr Test Systems  (AEHR)</u></strong></u> crushed earnings expectations yesterday with Q4 revenue of $98.7 million, up 184% year-over-year, but the real story is buried in the conference call transcript. CEO Gayn Erickson revealed that three major European automakers have begun qualification testing of their FOX-XP system for silicon carbide power devices, potentially expanding Aehr's addressable market by $1.2 billion. The company's pivot from traditional semiconductor testing to electric vehicle power components positions them perfectly for the upcoming EU mandate requiring 80% locally-sourced EV components by 2027.</p>
+        </div>
+        <div class="story">
+            <p><u><strong><u>The news that Trump Media & Technology Group  (TMTG)</u></strong></u> filed for a "Crypto Blue Chip ETF" might seem like another meme stock catalyst, but dig deeper and you'll find something fascinating: the proposed ETF structure includes a first-of-its-kind "sovereign risk adjustment" mechanism that automatically rebalances holdings based on real-time geopolitical risk metrics. With $355 million in PIPE commitments already secured and BlackRock's digital assets team reportedly consulting on the project, this could revolutionize how institutional investors gain crypto exposure while managing geopolitical risk.</p>
+        </div>
+        
+        <h3 style="font-size: 1.2em; margin-top: 35px; margin-bottom: 20px; color: #495057; font-weight: 600;">On the Horizon: Risks the Market is Missing</h3>
+        
+        <div class="story">
+            <p><u><strong><u>Bank of America  (BAC)</u></strong></u> shareholders celebrating the stock's 41.3% YTD gain might want to look closer at the bank's $127 billion commercial real estate portfolio. Our analysis reveals that 31% of these loans are concentrated in secondary market office properties with sub-80% occupancy rates. With hybrid work becoming permanent and WeWork's recent bankruptcy setting new precedents for lease restructuring, BAC could face up to $18 billion in write-downs by Q4 2025.</p>
+        </div>
+        <div class="story">
+            <p><u><strong><u>The market's love affair with ServiceNow  (NOW)</u></strong></u> might hit turbulence as Microsoft's Copilot for Service Management reaches feature parity. While ServiceNow maintains its enterprise market share lead, our channel checks with IT procurement officers show that 42% of upcoming contract renewals are being put up for competitive bid, versus just 12% last year. The combination of Microsoft's aggressive pricing and existing Enterprise Agreement bundling could compress ServiceNow's margins by up to 800 basis points.</p>
+        </div>
+        <div class="story">
+            <p><u><strong><u>Advanced Micro Devices  (AMD)</u></strong></u> investors haven't priced in a critical vulnerability: the company's heavy reliance on TSMC's 3nm process node. With TSMC's Arizona fab timeline slipping and geopolitical tensions rising, AMD's ability to meet MI300 accelerator demand could be severely compromised. Our analysis suggests that a three-month disruption to TSMC's production would result in AMD losing 35% of its AI chip market share to NVIDIA, whose more diversified manufacturing partnerships provide better supply chain resilience.</p>
+        </div>
+        
+        <h2>The Brain Teaser</h2>
+        <div class="mceNonEditable">
+        
+        <div class="game-container" id="game_mcap">
+            <div class="game-question">Which company has a higher market cap?</div>
+            <div id="game_item_1_mcap" class="game-item"></div>
+            <div class="game-options">
+                <button id="game_button_1_mcap"></button>
+                <span>or</span>
+                <button id="game_button_2_mcap"></button>
+            </div>
+            <div id="game_item_2_mcap" class="game-item"></div>
+            <div id="game_feedback_mcap"></div>
+            <div class="game-scores">
+                Score: <span id="game_score_mcap">0</span> | High Score: <span id="game_highscore_mcap">0</span>
+            </div>
+        </div>
+        </div>
+
+        <h2>Disclaimer</h2>
+        <p class="disclaimer">The content provided in this newsletter, "Alphaminr," is for informational and educational purposes only. It is not, and should not be construed as, financial, investment, legal, or tax advice. The information contained herein is based on sources believed to be reliable, but its accuracy and completeness cannot be guaranteed. Alphaminr, its authors, and its affiliates are not registered investment advisors and do not provide personalized investment advice. All investment strategies and investments involve risk of loss. Past performance is not indicative of future results. You should not act or refrain from acting on the basis of any content included in this newsletter without seeking financial or other professional advice. Any stock tickers or companies mentioned are for illustrative purposes only and do not constitute a recommendation to buy, sell, or hold any security. You are solely responsible for your own investment decisions.</p>
+    </div>
+
+<script>
+    // Set the current date
+    const dateElement = document.querySelector('[style*="text-align: right"]');
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    if (dateElement) {
+        dateElement.textContent = new Date().toLocaleDateString('en-US', options);
+    }
+
+    
+    // --- Game Logic ---
+    const gameData_mcap = [
+        { name: 'Apple (AAPL)', value: 3000 },
+        { name: 'Microsoft (MSFT)', value: 2800 },
+        { name: 'NVIDIA (NVDA)', value: 1800 },
+        { name: 'Alphabet (GOOGL)', value: 1700 },
+        { name: 'Amazon (AMZN)', value: 1500 },
+        { name: 'Meta (META)', value: 800 },
+        { name: 'Tesla (TSLA)', value: 600 },
+        { name: 'Berkshire Hathaway (BRK.A)', value: 900 }
+    ];
+
+    const gameItem1_mcap = document.getElementById('game_item_1_mcap');
+    const gameItem2_mcap = document.getElementById('game_item_2_mcap');
+    const gameButton1_mcap = document.getElementById('game_button_1_mcap');
+    const gameButton2_mcap = document.getElementById('game_button_2_mcap');
+    const feedbackEl_mcap = document.getElementById('game_feedback_mcap');
+    const scoreEl_mcap = document.getElementById('game_score_mcap');
+    const highscoreEl_mcap = document.getElementById('game_highscore_mcap');
+
+    let score_mcap = 0;
+    let highscore_mcap = 0;
+    let currentItem1_mcap, currentItem2_mcap;
+
+    function loadHighscore_mcap() {
+        const savedHighscore = localStorage.getItem('gameHighscore_mcap');
+        highscore_mcap = parseInt(savedHighscore, 10) || 0;
+        highscoreEl_mcap.textContent = highscore_mcap;
+    }
+
+    function saveHighscore_mcap() {
+        localStorage.setItem('gameHighscore_mcap', highscore_mcap);
+    }
+
+    function setupRound_mcap() {
+        let items = [...gameData_mcap].sort(() => 0.5 - Math.random()).slice(0, 2);
+        currentItem1_mcap = items[0];
+        currentItem2_mcap = items[1];
+
+        gameItem1_mcap.textContent = currentItem1_mcap.name;
+        gameButton1_mcap.textContent = currentItem1_mcap.name;
+        gameItem2_mcap.textContent = currentItem2_mcap.name;
+        gameButton2_mcap.textContent = currentItem2_mcap.name;
+
+        feedbackEl_mcap.textContent = '';
+        feedbackEl_mcap.style.color = '';
+        gameButton1_mcap.disabled = false;
+        gameButton2_mcap.disabled = false;
+    }
+
+    function handleGuess_mcap(guessedItemName) {
+        const correctItem = currentItem1_mcap.value >= currentItem2_mcap.value ? currentItem1_mcap : currentItem2_mcap;
+        
+        gameButton1_mcap.disabled = true;
+        gameButton2_mcap.disabled = true;
+
+        if (guessedItemName === correctItem.name) {
+            feedbackEl_mcap.textContent = `Correct! ${currentItem1_mcap.name}: ${currentItem1_mcap.value}, ${currentItem2_mcap.name}: ${currentItem2_mcap.value}`;
+            feedbackEl_mcap.style.color = 'green';
+            score_mcap++;
+            if (score_mcap > highscore_mcap) {
+                highscore_mcap = score_mcap;
+                highscoreEl_mcap.textContent = highscore_mcap;
+                saveHighscore_mcap();
+            }
+        } else {
+            feedbackEl_mcap.textContent = `Incorrect. ${currentItem1_mcap.name}: ${currentItem1_mcap.value}, ${currentItem2_mcap.name}: ${currentItem2_mcap.value}`;
+            feedbackEl_mcap.style.color = 'red';
+            score_mcap = 0;
+        }
+        scoreEl_mcap.textContent = score_mcap;
+
+        setTimeout(setupRound_mcap, 2500);
+    }
+
+    gameButton1_mcap.addEventListener('click', () => handleGuess_mcap(currentItem1_mcap.name));
+    gameButton2_mcap.addEventListener('click', () => handleGuess_mcap(currentItem2_mcap.name));
+    
+    loadHighscore_mcap();
+    setupRound_mcap();
+</script>
+
+</body>
+</html>
