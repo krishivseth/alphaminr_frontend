@@ -22,13 +22,16 @@ The frontend editor portal for the Alphaminr Newsletter Generator. This provides
    - Import this repository
 
 2. **Set Environment Variables**:
-   - `RAILWAY_BACKEND_URL` - Your Railway backend URL
-   - `EDITOR_PASSWORD` - Password for editor access
-   - `SECRET_KEY` - Flask secret key
-   - `MAILCHIMP_API_KEY` - Mailchimp API key (optional)
-   - `MAILCHIMP_SERVER_PREFIX` - Mailchimp server prefix (optional)
-   - `MAILCHIMP_LIST_ID` - Mailchimp list ID (optional)
-   - `ANTHROPIC_API_KEY` - Anthropic API key (for AI review)
+   - Go to your project settings in Vercel
+   - Navigate to "Environment Variables" section
+   - Add the following variables:
+     - `RAILWAY_BACKEND_URL` - Your Railway backend URL (e.g., `https://your-app.railway.app`)
+     - `EDITOR_PASSWORD` - Password for editor access
+     - `SECRET_KEY` - Flask secret key (generate a random string)
+     - `MAILCHIMP_API_KEY` - Mailchimp API key (optional)
+     - `MAILCHIMP_SERVER_PREFIX` - Mailchimp server prefix (optional)
+     - `MAILCHIMP_LIST_ID` - Mailchimp list ID (optional)
+     - `ANTHROPIC_API_KEY` - Anthropic API key (for AI review)
 
 3. **Deploy**:
    - Vercel will automatically detect the Python app
