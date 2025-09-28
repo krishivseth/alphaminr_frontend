@@ -657,6 +657,75 @@ def template_debug():
             "traceback": traceback.format_exc()
         }), 500
 
+@app.route('/api/debug-railway', methods=['GET'])
+@login_required
+def debug_railway():
+    """Debug Railway backend connection and newsletter fetching"""
+    try:
+        import requests
+        
+        # Get Railway backend URL from environment
+        railway_url = os.environ.get('RAILWAY_BACKEND_URL', 'http://localhost:5000')
+        
+        debug_info = {
+            "railway_backend_url": railway_url,
+            "environment_check": {
+                "RAILWAY_BACKEND_URL": "Set" if os.environ.get('RAILWAY_BACKEND_URL') else "Not set"
+            },
+            "api_tests": {}
+        }
+        
+        # Test 1: Health check
+        try:
+            health_url = f"{railway_url}/health"
+            response = requests.get(health_url, timeout=10)
+            debug_info["api_tests"]["health"] = {
+                "url": health_url,
+                "status_code": response.status_code,
+                "success": response.status_code == 200,
+                "response": response.text[:200] if response.text else "No response body"
+            }
+        except Exception as e:
+            debug_info["api_tests"]["health"] = {
+                "url": health_url,
+                "error": str(e),
+                "success": False
+            }
+        
+        # Test 2: Newsletter list
+        try:
+            newsletters_url = f"{railway_url}/api/newsletters"
+            response = requests.get(newsletters_url, timeout=10)
+            debug_info["api_tests"]["newsletters"] = {
+                "url": newsletters_url,
+                "status_code": response.status_code,
+                "success": response.status_code == 200,
+                "response": response.json() if response.status_code == 200 else response.text[:200]
+            }
+        except Exception as e:
+            debug_info["api_tests"]["newsletters"] = {
+                "url": newsletters_url,
+                "error": str(e),
+                "success": False
+            }
+        
+        # Test 3: Local newsletters directory
+        debug_info["local_newsletters"] = {
+            "directory_exists": os.path.exists(NEWSLETTER_DIR),
+            "directory_path": NEWSLETTER_DIR,
+            "files": []
+        }
+        
+        if os.path.exists(NEWSLETTER_DIR):
+            files = [f for f in os.listdir(NEWSLETTER_DIR) if f.endswith('.html')]
+            debug_info["local_newsletters"]["files"] = files
+            debug_info["local_newsletters"]["count"] = len(files)
+        
+        return jsonify(debug_info)
+        
+    except Exception as e:
+        return jsonify({"error": f"Debug failed: {str(e)}", "traceback": traceback.format_exc()}), 500
+
 @app.route('/api/env-check')
 def env_check():
     """Check environment variables without complex imports"""
