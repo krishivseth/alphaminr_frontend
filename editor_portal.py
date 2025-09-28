@@ -322,7 +322,12 @@ def generate_newsletter():
                 
         except Exception as e:
             print(f"[DEBUG] API call failed: {e}")
-            return jsonify({"error": f"Failed to generate newsletter: {str(e)}"}), 500
+            print(f"[DEBUG] Traceback: {traceback.format_exc()}")
+            return jsonify({
+                "error": f"Failed to generate newsletter: {str(e)}",
+                "traceback": traceback.format_exc(),
+                "railway_url": railway_url
+            }), 500
         
     except Exception as e:
         return jsonify({"error": f"Failed to start generation: {str(e)}"}), 500
@@ -473,6 +478,45 @@ def get_newsletters():
         return jsonify(newsletters)
     except Exception as e:
         return jsonify({"error": f"Failed to list newsletters: {str(e)}"}), 500
+
+@app.route('/api/debug-backend')
+def debug_backend():
+    """Debug endpoint to check backend connection and environment"""
+    try:
+        railway_url = os.environ.get('RAILWAY_BACKEND_URL', 'http://localhost:5000')
+        
+        # Test backend connection
+        import requests
+        backend_status = "Unknown"
+        backend_error = None
+        backend_response = None
+        
+        try:
+            response = requests.get(f"{railway_url}/health", timeout=10)
+            backend_status = f"Status: {response.status_code}"
+            backend_response = response.text
+            if response.status_code != 200:
+                backend_error = response.text
+        except Exception as e:
+            backend_status = "Failed to connect"
+            backend_error = str(e)
+        
+        debug_info = {
+            "railway_backend_url": railway_url,
+            "backend_status": backend_status,
+            "backend_error": backend_error,
+            "backend_response": backend_response,
+            "environment_check": {
+                "SECRET_KEY": "Set" if os.environ.get('SECRET_KEY') else "Not set",
+                "EDITOR_PASSWORD": "Set" if os.environ.get('EDITOR_PASSWORD') else "Not set",
+                "RAILWAY_BACKEND_URL": "Set" if os.environ.get('RAILWAY_BACKEND_URL') else "Not set"
+            }
+        }
+        
+        return jsonify(debug_info)
+        
+    except Exception as e:
+        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
 
 # --- LOCAL DEVELOPMENT ---
 if __name__ == '__main__':
