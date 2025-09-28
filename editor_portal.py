@@ -5,14 +5,38 @@ from datetime import datetime
 from functools import wraps
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from dotenv import load_dotenv
-from premailer import Premailer
 import traceback
 import re
 
-import github_helper # Use our new helper
-import mailchimp_marketing as MailchimpMarketing
-from mailchimp_marketing.api_client import ApiClientError
-import anthropic
+# Optional imports with error handling
+try:
+    from premailer import Premailer
+    PREMAILER_AVAILABLE = True
+except ImportError:
+    PREMAILER_AVAILABLE = False
+    print("Warning: Premailer not available")
+
+try:
+    import github_helper
+    GITHUB_HELPER_AVAILABLE = True
+except ImportError:
+    GITHUB_HELPER_AVAILABLE = False
+    print("Warning: github_helper not available")
+
+try:
+    import mailchimp_marketing as MailchimpMarketing
+    from mailchimp_marketing.api_client import ApiClientError
+    MAILCHIMP_AVAILABLE = True
+except ImportError:
+    MAILCHIMP_AVAILABLE = False
+    print("Warning: Mailchimp not available")
+
+try:
+    import anthropic
+    ANTHROPIC_AVAILABLE = True
+except ImportError:
+    ANTHROPIC_AVAILABLE = False
+    print("Warning: Anthropic not available")
 
 # Add imports for newsletter generation
 import subprocess
@@ -30,13 +54,19 @@ MOCK_MODE = os.getenv('MOCK_MODE', 'false').lower() == 'true'
 
 # --- API CLIENTS ---
 mailchimp = None
-if not MOCK_MODE and os.environ.get("MAILCHIMP_API_KEY"):
-    mailchimp = MailchimpMarketing.Client()
-    mailchimp.set_config({"api_key": os.environ.get("MAILCHIMP_API_KEY"), "server": os.environ.get("MAILCHIMP_SERVER_PREFIX")})
+if MAILCHIMP_AVAILABLE and not MOCK_MODE and os.environ.get("MAILCHIMP_API_KEY"):
+    try:
+        mailchimp = MailchimpMarketing.Client()
+        mailchimp.set_config({"api_key": os.environ.get("MAILCHIMP_API_KEY"), "server": os.environ.get("MAILCHIMP_SERVER_PREFIX")})
+    except Exception as e:
+        print(f"Warning: Failed to initialize Mailchimp client: {e}")
 
 client = None
-if not MOCK_MODE and os.environ.get("ANTHROPIC_API_KEY"):
-    client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+if ANTHROPIC_AVAILABLE and not MOCK_MODE and os.environ.get("ANTHROPIC_API_KEY"):
+    try:
+        client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+    except Exception as e:
+        print(f"Warning: Failed to initialize Anthropic client: {e}")
 
 # --- AUTHENTICATION (Improved Logic) ---
 
@@ -478,6 +508,59 @@ def get_newsletters():
         return jsonify(newsletters)
     except Exception as e:
         return jsonify({"error": f"Failed to list newsletters: {str(e)}"}), 500
+
+@app.route('/health')
+def health_check():
+    """Simple health check endpoint"""
+    return jsonify({
+        "status": "healthy",
+        "timestamp": datetime.now().isoformat(),
+        "imports": {
+            "premailer": PREMAILER_AVAILABLE,
+            "github_helper": GITHUB_HELPER_AVAILABLE,
+            "mailchimp": MAILCHIMP_AVAILABLE,
+            "anthropic": ANTHROPIC_AVAILABLE
+        }
+    })
+
+@app.route('/api/test')
+def test_endpoint():
+    """Minimal test endpoint to check if Flask is working"""
+    try:
+        return jsonify({
+            "status": "ok",
+            "message": "Flask is working",
+            "timestamp": datetime.now().isoformat()
+        })
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "error": str(e),
+            "traceback": traceback.format_exc()
+        }), 500
+
+@app.route('/api/env-check')
+def env_check():
+    """Check environment variables without complex imports"""
+    try:
+        env_vars = {
+            "SECRET_KEY": "Set" if os.environ.get('SECRET_KEY') else "Not set",
+            "EDITOR_PASSWORD": "Set" if os.environ.get('EDITOR_PASSWORD') else "Not set", 
+            "RAILWAY_BACKEND_URL": os.environ.get('RAILWAY_BACKEND_URL', 'Not set'),
+            "ANTHROPIC_API_KEY": "Set" if os.environ.get('ANTHROPIC_API_KEY') else "Not set",
+            "MAILCHIMP_API_KEY": "Set" if os.environ.get('MAILCHIMP_API_KEY') else "Not set"
+        }
+        
+        return jsonify({
+            "status": "ok",
+            "environment_variables": env_vars
+        })
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "error": str(e),
+            "traceback": traceback.format_exc()
+        }), 500
 
 @app.route('/api/debug-backend')
 def debug_backend():
