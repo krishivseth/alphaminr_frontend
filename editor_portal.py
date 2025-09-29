@@ -272,9 +272,14 @@ Keep your review concise and actionable."""
 @login_required
 def send_newsletter(newsletter_id):
     """Send newsletter to Mailchimp list using a manual premailer workflow."""
+    print(f"[DEBUG] Send newsletter called with ID: {newsletter_id}")
+    
     html_content = get_newsletter_content(newsletter_id)
     if not html_content:
+        print(f"[DEBUG] Failed to get newsletter content for ID: {newsletter_id}")
         return jsonify({"error": "Newsletter not found"}), 404
+    
+    print(f"[DEBUG] Successfully retrieved newsletter content ({len(html_content)} chars)")
 
     inlined_html = html_content # Default to original html
     try:
@@ -657,69 +662,61 @@ def template_debug():
             "traceback": traceback.format_exc()
         }), 500
 
-@app.route('/api/debug-railway', methods=['GET'])
+@app.route('/api/debug-newsletter/<newsletter_id>', methods=['GET'])
 @login_required
-def debug_railway():
-    """Debug Railway backend connection and newsletter fetching"""
+def debug_newsletter_content(newsletter_id):
+    """Debug endpoint to test newsletter content retrieval"""
     try:
-        import requests
+        print(f"[DEBUG] Testing newsletter content retrieval for ID: {newsletter_id}")
         
-        # Get Railway backend URL from environment
+        # Test Railway fetch
         railway_url = os.environ.get('RAILWAY_BACKEND_URL', 'http://localhost:5000')
+        api_url = f"{railway_url}/newsletter/{newsletter_id}"
         
         debug_info = {
-            "railway_backend_url": railway_url,
-            "environment_check": {
-                "RAILWAY_BACKEND_URL": "Set" if os.environ.get('RAILWAY_BACKEND_URL') else "Not set"
-            },
-            "api_tests": {}
+            "newsletter_id": newsletter_id,
+            "railway_url": railway_url,
+            "api_url": api_url,
+            "tests": {}
         }
         
-        # Test 1: Health check
+        # Test 1: Direct Railway API call
         try:
-            health_url = f"{railway_url}/health"
-            response = requests.get(health_url, timeout=10)
-            debug_info["api_tests"]["health"] = {
-                "url": health_url,
+            import requests
+            response = requests.get(api_url, timeout=10)
+            debug_info["tests"]["railway_api"] = {
                 "status_code": response.status_code,
                 "success": response.status_code == 200,
-                "response": response.text[:200] if response.text else "No response body"
+                "content_length": len(response.text) if response.text else 0,
+                "content_preview": response.text[:200] if response.text else "No content"
             }
         except Exception as e:
-            debug_info["api_tests"]["health"] = {
-                "url": health_url,
+            debug_info["tests"]["railway_api"] = {
                 "error": str(e),
                 "success": False
             }
         
-        # Test 2: Newsletter list
+        # Test 2: get_newsletter_content function
         try:
-            newsletters_url = f"{railway_url}/api/newsletters"
-            response = requests.get(newsletters_url, timeout=10)
-            debug_info["api_tests"]["newsletters"] = {
-                "url": newsletters_url,
-                "status_code": response.status_code,
-                "success": response.status_code == 200,
-                "response": response.json() if response.status_code == 200 else response.text[:200]
+            content = get_newsletter_content(newsletter_id)
+            debug_info["tests"]["get_newsletter_content"] = {
+                "success": content is not None,
+                "content_length": len(content) if content else 0,
+                "content_preview": content[:200] if content else "No content"
             }
         except Exception as e:
-            debug_info["api_tests"]["newsletters"] = {
-                "url": newsletters_url,
+            debug_info["tests"]["get_newsletter_content"] = {
                 "error": str(e),
                 "success": False
             }
         
-        # Test 3: Local newsletters directory
-        debug_info["local_newsletters"] = {
-            "directory_exists": os.path.exists(NEWSLETTER_DIR),
-            "directory_path": NEWSLETTER_DIR,
-            "files": []
+        # Test 3: Local file check
+        file_path = os.path.join(NEWSLETTER_DIR, newsletter_id)
+        debug_info["tests"]["local_file"] = {
+            "file_path": file_path,
+            "exists": os.path.exists(file_path),
+            "is_file": os.path.isfile(file_path) if os.path.exists(file_path) else False
         }
-        
-        if os.path.exists(NEWSLETTER_DIR):
-            files = [f for f in os.listdir(NEWSLETTER_DIR) if f.endswith('.html')]
-            debug_info["local_newsletters"]["files"] = files
-            debug_info["local_newsletters"]["count"] = len(files)
         
         return jsonify(debug_info)
         
