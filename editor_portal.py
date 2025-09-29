@@ -149,15 +149,15 @@ def get_all_newsletters():
     except Exception as e:
         print(f"[DEBUG] Failed to fetch newsletters from Railway: {e}")
     
-    # Fallback to local directory if Railway fails
-    print("[DEBUG] Falling back to local newsletters directory")
-    if not os.path.exists(NEWSLETTER_DIR): 
-        return []
-    files = sorted([f for f in os.listdir(NEWSLETTER_DIR) if f.endswith('.html')], reverse=True)
-    return [{'id': f, 'display_date': f.split('_')[-1].replace('.html', '')} for f in files]
+    # No fallback to local directory - newsletters must come from Railway
+    print("[DEBUG] Railway API failed, returning empty list")
+    return []
 
 def get_newsletter_content(newsletter_id):
-    """Get newsletter content from Railway backend, fallback to local file"""
+    """Get newsletter content from Railway backend only"""
+    print(f"[DEBUG] get_newsletter_content called with ID: {newsletter_id}")
+    print(f"[DEBUG] ID type: {type(newsletter_id)}, length: {len(newsletter_id)}")
+    
     try:
         import requests
         
@@ -170,22 +170,25 @@ def get_newsletter_content(newsletter_id):
         # Make the API call to Railway backend
         response = requests.get(api_url, timeout=30)
         
+        print(f"[DEBUG] Railway API response: status={response.status_code}, content_length={len(response.text)}")
+        
         if response.status_code == 200:
             content = response.text
             print(f"[DEBUG] Successfully fetched newsletter content from Railway ({len(content)} chars)")
+            print(f"[DEBUG] Content preview: {content[:100]}...")
             return content
+        elif response.status_code == 404:
+            print(f"[DEBUG] Newsletter not found in Railway database: {newsletter_id}")
         else:
-            print(f"[DEBUG] Railway API call failed: {response.status_code}")
+            print(f"[DEBUG] Railway API call failed: {response.status_code} - {response.text[:200]}")
             
     except Exception as e:
         print(f"[DEBUG] Failed to fetch newsletter content from Railway: {e}")
+        import traceback
+        print(f"[DEBUG] Traceback: {traceback.format_exc()}")
     
-    # Fallback to local file
-    print("[DEBUG] Falling back to local newsletter file")
-    file_path = os.path.join(NEWSLETTER_DIR, newsletter_id)
-    if os.path.exists(file_path):
-        with open(file_path, 'r', encoding='utf-8') as f: 
-            return f.read()
+    # No fallback to local files - Railway newsletters must come from Railway
+    print(f"[DEBUG] Newsletter not found in Railway backend: {newsletter_id}")
     return None
 
 # --- PROTECTED ROUTES ---
